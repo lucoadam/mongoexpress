@@ -5,6 +5,7 @@
  */
  const express = require('express');
  const mongoose = require('mongoose');
+ const cors = require('cors')
  
  // Import routes from routes/index.js
  const router = require('./routes');
@@ -14,6 +15,13 @@
  
  // Parses the json data from request body (request.body)
  app.use(express.json());
+
+ // enabling access of backend server from all domain
+ /**
+  * ("*") ==> Allows access from all domains
+  * Frontend domain replace
+  */
+ app.use(cors("*"))
  
  // Parses the query params from request url (request.params)
  app.use(express.urlencoded({ extended: true }));
@@ -39,7 +47,7 @@
  
  // Listen web requests on 3000 port
 // console.log('env variable', process.env.PORT || 3000)
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
  app.listen(port, () => {
    //string concat
     //  console.log('App listening on port http://localhost:'+port);
