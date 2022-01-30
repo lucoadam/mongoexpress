@@ -49,10 +49,11 @@ async function addUser(req, res) {
      * const age = req.body.age
      * const { name, age } = req.body
      * **/
-    const { name, age } = req.body;
+    const { name, age, location } = req.body;
     const user = await userSchema.create({
         name,
-        age
+        age,
+        location
     });
     return res.json(user);
 }
@@ -62,7 +63,7 @@ async function addUser(req, res) {
  * PUT api for updating a user by id
  */
 async function updateUser(req, res) {
-    const { name, age } = req.body;
+    const { name, age, location } = req.body;
     /**
      * findOneAndUpdate (find query, update paramters, options)
      */
@@ -70,7 +71,8 @@ async function updateUser(req, res) {
         _id: req.params.id
     }, {
         name,
-        age
+        age,
+        location
     }, {
         new: true
     });
