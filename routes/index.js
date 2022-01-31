@@ -20,7 +20,7 @@ const router = require('express').Router();
  */
 async function getAllUsers(req, res) {
     const users = await userSchema.find(); //
-    res.json(users);
+    res.json(users); // send the response status 200 
     res.end();
 }
 /**
@@ -35,7 +35,16 @@ async function getUserById(req, res) {
     const user = await userSchema.findOne({
         _id: req.params.id
     });
-    res.json(user);
+    if(!user){
+        res.status(204).json({
+            message: 'No user found!',
+            data: {}
+        })
+    }
+    res.json({
+        message: 'Success',
+        data:user
+    });
     res.end();
 }
 
@@ -55,7 +64,10 @@ async function addUser(req, res) {
         age,
         location
     });
-    return res.json(user);
+    return res.status(201).json({
+        message: 'User created successfully!',
+        data: user
+    });
 }
 
 
@@ -63,12 +75,13 @@ async function addUser(req, res) {
  * PUT api for updating a user by id
  */
 async function updateUser(req, res) {
-    const { name, age, location } = req.body;
+    const { _id, name, age, location } = req.body;
+    console.log(_id);
     /**
      * findOneAndUpdate (find query, update paramters, options)
      */
     const user = await userSchema.findOneAndUpdate({
-        _id: req.params.id
+        _id: _id
     }, {
         name,
         age,
@@ -76,7 +89,9 @@ async function updateUser(req, res) {
     }, {
         new: true
     });
-    return res.json(user);
+    return res.status(202).json({
+        message: 'User updated successfully',
+        data: user});
 }
 
 
@@ -89,7 +104,7 @@ async function deleteUser(req, res) {
      * database _id : given id equal (data will deleted)
      */
     const user = await userSchema.findOneAndDelete({ _id: req.params.id });
-    return res.json(user);
+    return res.status(204).json(user);
 }
 function getRootRoute(req, res){
     res.send('Backend for workshop')

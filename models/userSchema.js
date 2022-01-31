@@ -13,12 +13,13 @@ const schema = mongoose.Schema(
     location: {
       type: String,
       required: true,
-  },
+    },
     age: {
         type: Number,
         required: true
     }
-  },
-);
+  },/* Schema options*/ {
+    timestamps: true
+  });
 
 module.exports = mongoose.model('User', schema);
